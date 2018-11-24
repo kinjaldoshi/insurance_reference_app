@@ -14,11 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.StringUtils;
 
+import com.stg.insurance.model.ActiveTemplateTracker;
 import com.stg.insurance.model.DriversInformation;
 import com.stg.insurance.models.genericdata.Category;
 import com.stg.insurance.models.genericdata.Document;
 import com.stg.insurance.models.genericdata.FieldValue;
 import com.stg.insurance.models.genericdata.Record;
+import com.stg.insurance.repository.ActiveTemplateRepository;
 import com.stg.insurance.repository.DriverInformationRepo;
 import com.stg.insurance.services.DataExtractionService;
 import com.stg.insurance.utils.CommonUtilities;
@@ -27,6 +29,9 @@ public class DataExtractionServiceImpl implements DataExtractionService {
 
 	@Autowired
 	DriverInformationRepo driverInformationRepo;
+
+	@Autowired
+	ActiveTemplateRepository activeTemplateRepository;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DataExtractionServiceImpl.class);
 
@@ -94,6 +99,22 @@ public class DataExtractionServiceImpl implements DataExtractionService {
 		catList.add(cat);
 		doc.setCategories(catList);
 		return doc;
+	}
+
+	@Override
+	public List<ActiveTemplateTracker> getActiveTemplate() {
+		List<ActiveTemplateTracker> response = activeTemplateRepository.findAll();
+		return response;
+	}
+
+	@Override
+	public void updateActiveTemplate(List<ActiveTemplateTracker> updateListOfActiveTemplate) {
+
+		for (ActiveTemplateTracker tracker : updateListOfActiveTemplate) {
+
+			activeTemplateRepository.save(tracker);
+		}
+
 	}
 
 }

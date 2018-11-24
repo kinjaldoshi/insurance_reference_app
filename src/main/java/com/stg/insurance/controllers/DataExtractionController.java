@@ -7,18 +7,23 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.stg.insurance.model.ActiveTemplateTracker;
 import com.stg.insurance.models.genericdata.Category;
 import com.stg.insurance.models.genericdata.Document;
 import com.stg.insurance.services.DataExtractionService;
 
 @RestController
 @RequestMapping("/v1")
+@CrossOrigin
 public class DataExtractionController {
 
 	@Autowired
@@ -31,7 +36,8 @@ public class DataExtractionController {
 	private String collateAL3;
 
 	@GetMapping("/extract/combinedResponse")
-	public String getCombinedResponse(@RequestParam(name="filename", required=true) String fileName) throws IOException {
+	public String getCombinedResponse(@RequestParam(name = "filename", required = true) String fileName)
+			throws IOException {
 
 		Document document = new Document();
 		List<Category> catList = new ArrayList<>();
@@ -53,4 +59,22 @@ public class DataExtractionController {
 		return edi;
 
 	}
+
+	// [{ "name": "Template1", "status": true }, { "name": "Template2", "status":
+	// false }]
+
+	@GetMapping(value = "/getActiveTemplates")
+	public List<ActiveTemplateTracker> getActiveTemplate() {
+		List<ActiveTemplateTracker> activeTemplateTrackerResponse = dataExtractionService.getActiveTemplate();
+
+		return activeTemplateTrackerResponse;
+
+	}
+
+	@PostMapping(value = "/updateActiveTemplates")
+	public void updateActiveTemplate(@RequestBody List<ActiveTemplateTracker> updateListOfActiveTemplate) {
+		dataExtractionService.updateActiveTemplate(updateListOfActiveTemplate);
+
+	}
+
 }
