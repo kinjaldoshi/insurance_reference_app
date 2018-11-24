@@ -10,4 +10,6 @@ import com.stg.insurance.models.genericdata.Document;
 public interface DataExtractionService {
 
 	Document readCategoryFromFile(String filepath, String recordDelimiter, String fieldDelimiter, String fieldDemarcator) throws IOException;
+
+	Document readContentFromDB(String code);
 }

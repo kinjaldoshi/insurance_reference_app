@@ -1,6 +1,6 @@
 package com.stg.insurance.models.genericdata;
 
-import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Aditya Verma
@@ -10,13 +10,13 @@ import java.util.HashMap;
  */
 public class Record {
 	
-	private HashMap<String, FieldValue> fields;
+	private Map<String, FieldValue> fields;
 
-	public HashMap<String, FieldValue> getFields() {
+	public Map<String, FieldValue> getFields() {
 		return fields;
 	}
 
-	public void setFields(HashMap<String, FieldValue> fields) {
+	public void setFields(Map<String, FieldValue> fields) {
 		this.fields = fields;
 	}
 

@@ -1,0 +1,1 @@
+INSERT INTO public.drivers_information(id, date_of_birth_dt6, date_of_birth_dt8, drivers_license_number, drivers_name, license_state) VALUES (1, '2nd March, 18', '2nd March, 18','KARIN05','Abhinav', 'Karnataka');

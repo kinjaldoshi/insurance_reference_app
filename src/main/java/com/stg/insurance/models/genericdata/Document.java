@@ -1,5 +1,7 @@
 package com.stg.insurance.models.genericdata;
 
+import java.util.List;
+
 /**
  * @author Aditya Verma
  * 
@@ -7,13 +9,22 @@ package com.stg.insurance.models.genericdata;
  *
  */
 public class Document {
-	private Category category;
 
-	public Category getCategory() {
-		return category;
+	private List<Category> categories;
+
+	/**
+	 * @return the categories
+	 */
+	public List<Category> getCategories() {
+		return categories;
 	}
 
-	public void setCategory(Category category) {
-		this.category = category;
+	/**
+	 * @param categories
+	 *            the categories to set
+	 */
+	public void setCategories(List<Category> categories) {
+		this.categories = categories;
 	}
+
 }
