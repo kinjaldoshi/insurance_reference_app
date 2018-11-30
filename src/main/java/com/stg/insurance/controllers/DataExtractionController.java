@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,9 +37,8 @@ public class DataExtractionController {
 	private String collateAL3;
 
 	@GetMapping("/extract/combinedResponse")
-	public String getCombinedResponse(@RequestParam(name = "filename", required = true) String fileName)
+	public ResponseEntity<byte[]> getCombinedResponse(@RequestParam(name = "filename", required = true) String fileName)
 			throws IOException {
-
 		Document document = new Document();
 		List<Category> catList = new ArrayList<>();
 		Document bp1Doc = dataExtractionService.readCategoryFromFile("bpi1.csv", "CRLF", ",", ":");
@@ -55,18 +55,20 @@ public class DataExtractionController {
 		}
 		document.setCategories(catList);
 		StringBuilder builder = new StringBuilder(collateAL3).append("?").append("filename=").append(fileName);
-		String edi = restTemplate.postForObject(builder.toString(), document, String.class, "AL3");
-		return edi;
+		return restTemplate.postForEntity(builder.toString(), document, byte[].class, "AL3");
 
 	}
-
-	// [{ "name": "Template1", "status": true }, { "name": "Template2", "status":
-	// false }]
 
 	@GetMapping(value = "/getActiveTemplates")
 	public List<ActiveTemplateTracker> getActiveTemplate() {
 		List<ActiveTemplateTracker> activeTemplateTrackerResponse = dataExtractionService.getActiveTemplate();
+		return activeTemplateTrackerResponse;
 
+	}
+
+	@GetMapping(value = "/getDefaultActiveTemplate")
+	public String getDefaultActiveTemplate() {
+		String activeTemplateTrackerResponse = dataExtractionService.getDefaultActiveTemplate();
 		return activeTemplateTrackerResponse;
 
 	}

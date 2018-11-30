@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import com.stg.insurance.model.ActiveTemplateTracker;
@@ -47,7 +48,6 @@ public class DataExtractionServiceImpl implements DataExtractionService {
 		if (StringUtils.isEmpty(content)) {
 			// TODO Throw a service exception
 		} else {
-			// TODO Validate file for format
 			document = new Document();
 			category = new Category();
 			catList = new ArrayList<>();
@@ -108,11 +108,36 @@ public class DataExtractionServiceImpl implements DataExtractionService {
 	}
 
 	@Override
+	public String getDefaultActiveTemplate() {
+		String activeTemplateResponse = null;
+		List<ActiveTemplateTracker> response = activeTemplateRepository.findAll();
+		for (ActiveTemplateTracker activeTemplateTracker : response) {
+			if (activeTemplateTracker.getIsActive() == true) {
+				activeTemplateResponse = activeTemplateTracker.getName();
+			}
+		}
+		return activeTemplateResponse;
+	}
+
+	@Override
 	public void updateActiveTemplate(List<ActiveTemplateTracker> updateListOfActiveTemplate) {
-
+		boolean flag = false;
+		List<ActiveTemplateTracker> listFromDB = activeTemplateRepository.findAll();
 		for (ActiveTemplateTracker tracker : updateListOfActiveTemplate) {
-
-			activeTemplateRepository.save(tracker);
+			if (!CollectionUtils.isEmpty(listFromDB)) {
+				for (ActiveTemplateTracker fromBD : listFromDB) {
+					if (tracker.getName().equalsIgnoreCase(fromBD.getName())) {
+						tracker.setId(fromBD.getId());
+						activeTemplateRepository.save(tracker);
+						flag = true;
+					}
+				}
+				if (flag != true) {
+					activeTemplateRepository.save(tracker);
+				}
+			} else {
+				activeTemplateRepository.save(tracker);
+			}
 		}
 
 	}

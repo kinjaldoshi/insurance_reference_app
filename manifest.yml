@@ -3,5 +3,4 @@ applications:
   path: target/insurance_reference_app-0.0.1-SNAPSHOT.jar
   services:
    - postressql
-  env:
-    SPRING_PROFILES_ACTIVE: cloud
+  

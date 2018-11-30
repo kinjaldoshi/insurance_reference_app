@@ -10,8 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+
 /**
- * @author Sagar dell pc
+ * @author abhinavkumar.gupta
  *
  */
 @Entity

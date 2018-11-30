@@ -20,4 +20,7 @@ public interface DataExtractionService {
 
 	void updateActiveTemplate(List<ActiveTemplateTracker> updateListOfActiveTemplate);
 
+
+	String getDefaultActiveTemplate();
+
 }
